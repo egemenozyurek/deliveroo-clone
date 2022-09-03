@@ -10,10 +10,14 @@ import {
 } from "react-native-heroicons/solid";
 import { QuestionMarkCircleIcon } from "react-native-heroicons/outline";
 import DishRow from '../components/DishRow';
+import BasketIcon from '../components/BasketIcon';
+import { useEffect } from 'react';
+import { useDispatch} from "react-redux";
+import { setRestaurant } from '../features/restaurantSlice';
 
 const RestaurantScreen = () => {
     const navigation = useNavigation();
-
+    const dispatch = useDispatch();
     const {
         params: {
             id,
@@ -34,8 +38,26 @@ const RestaurantScreen = () => {
             headerShown: false,
         })
     }, [])
+
+    useEffect(() => {
+        dispatch(
+            setRestaurant({
+                id,
+                imgUrl,
+                title,
+                short_description,
+                address,
+                genre,
+                rating,
+                long,
+                lat,
+                dishes,
+            })
+        )
+    }, [dispatch]);
     return (
-        <ScrollView>
+        <>
+            <BasketIcon />
             <View>
                 <Image
                     source={{ uri: urlFor(imgUrl).url() }}
@@ -95,7 +117,7 @@ const RestaurantScreen = () => {
                     />
                 ))}
             </View>
-        </ScrollView>
+        </>
     )
 }
 
